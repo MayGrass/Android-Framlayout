@@ -8,10 +8,12 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
-    private Fragment[] fs = new Fragment[3];
+    private Fragment[] fs = new Fragment[5];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +21,38 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         viewPager = findViewById(R.id.viewPager);
-        fs[0] = new P1(); fs[1] = new P2(); fs[2] = new P3();
+        fs[0] = new P0(); fs[1] = new P1(); fs[2] = new P2();
+        fs[3] = new P3(); fs[4] = new P4();
 
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            //製造有拉不過去頁面的效果
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                Log.v("DCH", "Page=" + position);
+                if (position == 0) {
+                    viewPager.setCurrentItem(1);
+                }
+                else if (position == 4) {
+                    viewPager.setCurrentItem(3);
+                }
+            }
+        });
+        //預設postion 1開始
+        viewPager.setCurrentItem(1);
+    }
+
+    public void gotoP1(View view) {
+        viewPager.setCurrentItem(1);
+    }
+
+    public void gotoP2(View view) {
+        viewPager.setCurrentItem(2);
+    }
+
+    public void gotoP3(View view) {
+        viewPager.setCurrentItem(3);
     }
 
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
